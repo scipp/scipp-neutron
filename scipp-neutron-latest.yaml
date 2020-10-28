@@ -9,5 +9,3 @@ dependencies:
   - conda-build
   # run
   - scipp 
-  # test
-  - pytest

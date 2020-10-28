@@ -28,14 +28,6 @@ stages:
             displayName: 'create anaconda environment'
           - bash: |
              source activate scipp-neutron-latest
-             python -m pytest --junitxml=junit/unit-test.xml
-            displayName: 'run pytest'
-          - task: PublishTestResults@2
-            inputs:
-              testResultsFiles: 'junit/*.xml'
-            condition: succeededOrFailed()
-          - bash: |
-             source activate scipp-neutron-latest
              conda env list
              conda build conda/ -c scipp/label/dev 
             displayName: 'package'
