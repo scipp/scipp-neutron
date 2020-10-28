@@ -36,5 +36,6 @@ stages:
             condition: succeededOrFailed()
           - bash: |
              source activate scipp-neutron-latest
+             conda env list
              conda build conda/ -c scipp/label/dev 
             displayName: 'package'
