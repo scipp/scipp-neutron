@@ -35,7 +35,6 @@ stages:
               testResultsFiles: 'junit/*.xml'
             condition: succeededOrFailed()
           - bash: |
-             git fetch --tags
              source activate scipp-neutron-latest
-             conda build conda/ 
+             conda build conda/ -c scipp/label/dev 
             displayName: 'package'
