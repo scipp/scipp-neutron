@@ -35,6 +35,7 @@ stages:
               testResultsFiles: 'junit/*.xml'
             condition: succeededOrFailed()
           - bash: |
+             git fetch -p
              source activate scipp-neutron-latest
              conda build conda/ 
-            displayName: 'run pytest'
+            displayName: 'package'
