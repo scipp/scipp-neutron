@@ -24,7 +24,7 @@ stages:
              set -ex
              conda --version
              conda install anaconda-client conda-build pytest --yes
-             conda install scipp -c scipp/label/dev --yes
+             conda install scipp -c scipp/lable/dev --yes
              conda config --set always_yes yes --set changeps1 no
             displayName: 'create anaconda environment'
           - bash: |
