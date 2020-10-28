@@ -27,5 +27,5 @@ stages:
              conda config --set always_yes yes --set changeps1 no
             displayName: 'create anaconda environment'
           - bash: |
-             conda build conda/ -c scipp/label/dev 
+             conda build conda/ -c scipp/label/dev --python=3.7
             displayName: 'package'
