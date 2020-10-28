@@ -1,5 +1,6 @@
 trigger:
   - latest
+  - packaging
 
 pr: none
 
@@ -33,3 +34,7 @@ stages:
             inputs:
               testResultsFiles: 'junit/*.xml'
             condition: succeededOrFailed()
+          - bash: |
+             source activate scipp-neutron-latest
+             conda build conda/ 
+            displayName: 'run pytest'
