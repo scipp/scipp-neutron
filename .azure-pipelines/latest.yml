@@ -23,11 +23,11 @@ stages:
           - bash: |
              set -ex
              conda --version
+             conda install anaconda-client conda-build pytest --yes
+             conda install scipp -c scipp/lable/dev --yes
              conda config --set always_yes yes --set changeps1 no
-             conda env create -f scipp-neutron-latest.yaml
             displayName: 'create anaconda environment'
           - bash: |
-             source activate scipp-neutron-latest
              python -m pytest --junitxml=junit/unit-test.xml
             displayName: 'run pytest'
           - task: PublishTestResults@2
@@ -35,7 +35,5 @@ stages:
               testResultsFiles: 'junit/*.xml'
             condition: succeededOrFailed()
           - bash: |
-             source activate scipp-neutron-latest
-             conda env list
              conda build conda/ -c scipp/label/dev 
             displayName: 'package'
