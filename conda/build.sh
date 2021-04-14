@@ -12,20 +12,11 @@ else
   IPO="OFF"
 fi
 
-if test -z "${DEBUG_BUILD}"
-then
-  BUILD_TYPE="Debug"
-else
-  # Disable IPO for OSX due to unexplained linker failure.
-  BUILD_TYPE="Release"
-  IPO="OFF"
-fi
-
 # Perform CMake configuration
 cmake \
   -G Ninja \
   -DPYTHON_EXECUTABLE="$CONDA_PREFIX/bin/python" \
-  -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
+  -DCMAKE_BUILD_TYPE=Debug \
   -DCMAKE_INSTALL_PREFIX="$CONDA_PREFIX" \
   -DCMAKE_OSX_DEPLOYMENT_TARGET=$OSX_VERSION \
   -DCMAKE_OSX_SYSROOT="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX$OSX_VERSION.sdk" \
