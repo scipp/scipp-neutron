@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List, Union, Iterator, Optional
+from typing import List, Union, Iterator, Optional, Dict
 import h5py
 import numpy as np
 from enum import Enum
@@ -97,83 +97,6 @@ class Link:
     target_path: str
 
 
-def _add_event_data_group_to_file(data: EventData, parent_group: h5py.Group,
-                                  group_name: str):
-    event_group = _create_nx_class(group_name, "NXevent_data", parent_group)
-    event_group.create_dataset("event_id", data=data.event_id)
-    event_time_offset_ds = event_group.create_dataset(
-        "event_time_offset", data=data.event_time_offset)
-    event_time_offset_ds.attrs["units"] = "ns"
-    event_time_zero_ds = event_group.create_dataset("event_time_zero",
-                                                    data=data.event_time_zero)
-    event_time_zero_ds.attrs["units"] = "ns"
-    event_group.create_dataset("event_index", data=data.event_index)
-
-
-def _add_detector_group_to_file(detector: Detector, parent_group: h5py.Group,
-                                group_name: str) -> h5py.Group:
-    detector_group = _create_nx_class(group_name, "NXdetector", parent_group)
-    detector_group.create_dataset("detector_number",
-                                  data=detector.detector_numbers)
-    for dataset_name, array in (("x_pixel_offset", detector.x_offsets),
-                                ("y_pixel_offset", detector.y_offsets),
-                                ("z_pixel_offset", detector.z_offsets)):
-        if array is not None:
-            offsets_ds = detector_group.create_dataset(dataset_name,
-                                                       data=array)
-            if detector.offsets_unit is not None:
-                offsets_ds.attrs["units"] = detector.offsets_unit
-    return detector_group
-
-
-def _add_log_group_to_file(log: Log, parent_group: h5py.Group) -> h5py.Group:
-    log_group = _create_nx_class(log.name, "NXlog", parent_group)
-    if log.value is not None:
-        value_ds = log_group.create_dataset("value", data=log.value)
-        if log.value_units is not None:
-            value_ds.attrs.create("units", data=log.value_units)
-    if log.time is not None:
-        time_ds = log_group.create_dataset("time", data=log.time)
-        if log.time_units is not None:
-            time_ds.attrs.create("units", data=log.time_units)
-    return log_group
-
-
-def _add_transformations_to_file(transform: Transformation,
-                                 parent_group: h5py.Group) -> str:
-    transform_chain = [transform]
-    while transform.depends_on is not None and not isinstance(
-            transform.depends_on, str):
-        transform_chain.append(transform.depends_on)
-        transform = transform.depends_on
-
-    transforms_group = _create_nx_class("transformations", "NXtransformations",
-                                        parent_group)
-    transform_chain.reverse()
-    depends_on_str = transform.depends_on if isinstance(
-        transform.depends_on, str) else None
-    for transform_number, transform in enumerate(transform_chain):
-        if transform.time is not None:
-            depends_on_str = _add_transformation_as_log(
-                transform, transform_number, transforms_group, depends_on_str)
-        else:
-            depends_on_str = _add_transformation_as_dataset(
-                transform, transform_number, transforms_group, depends_on_str)
-    return depends_on_str
-
-
-def _add_transformation_as_dataset(transform: Transformation,
-                                   transform_number: int,
-                                   transforms_group: h5py.Group,
-                                   depends_on: Optional[str]) -> str:
-    added_transform = transforms_group.create_dataset(
-        f"transform_{transform_number}", data=transform.value)
-    _add_transform_attributes(added_transform, depends_on, transform)
-    if transform.value_units is not None:
-        added_transform.attrs["units"] = transform.value_units
-    return added_transform.name
-
-
 def _add_transform_attributes(added_transform: Union[h5py.Group, h5py.Dataset],
                               depends_on: Optional[str],
                               transform: Transformation):
@@ -188,18 +111,114 @@ def _add_transform_attributes(added_transform: Union[h5py.Group, h5py.Dataset],
         added_transform.attrs["depends_on"] = "."  # means end of chain
 
 
-def _add_transformation_as_log(transform: Transformation,
-                               transform_number: int,
-                               transforms_group: h5py.Group,
-                               depends_on: Optional[str]) -> str:
-    added_transform = _add_log_group_to_file(
-        Log(f"transform_{transform_number}", transform.value, transform.time,
-            transform.value_units, transform.time_units), transforms_group)
-    _add_transform_attributes(added_transform, depends_on, transform)
-    return added_transform.name
+class InMemoryNeXusWriter:
+    @staticmethod
+    def add_dataset(parent: h5py.Group, name: str,
+                    data: Union[str, np.ndarray]) -> h5py.Dataset:
+        return parent.create_dataset(name, data=data)
+
+    @staticmethod
+    def add_attribute(parent: Union[h5py.Group, h5py.Dataset], name: str,
+                      value: Union[str, np.ndarray]):
+        parent.attrs[name] = value
+
+    def add_event_data_group_to_file(self, data: EventData,
+                                     parent_group: h5py.Group,
+                                     group_name: str):
+        event_group = _create_nx_class(group_name, "NXevent_data",
+                                       parent_group)
+        event_group.create_dataset("event_id", data=data.event_id)
+        event_time_offset_ds = event_group.create_dataset(
+            "event_time_offset", data=data.event_time_offset)
+        event_time_offset_ds.attrs["units"] = "ns"
+        event_time_zero_ds = event_group.create_dataset(
+            "event_time_zero", data=data.event_time_zero)
+        event_time_zero_ds.attrs["units"] = "ns"
+        event_group.create_dataset("event_index", data=data.event_index)
+
+    def add_transformations_to_file(self, transform: Transformation,
+                                    parent_group: h5py.Group) -> str:
+        transform_chain = [transform]
+        while transform.depends_on is not None and not isinstance(
+                transform.depends_on, str):
+            transform_chain.append(transform.depends_on)
+            transform = transform.depends_on
+
+        transforms_group = _create_nx_class("transformations",
+                                            "NXtransformations", parent_group)
+        transform_chain.reverse()
+        depends_on_str = transform.depends_on if isinstance(
+            transform.depends_on, str) else None
+        for transform_number, transform in enumerate(transform_chain):
+            if transform.time is not None:
+                depends_on_str = self.add_transformation_as_log(
+                    transform, transform_number, transforms_group,
+                    depends_on_str)
+            else:
+                depends_on_str = self.add_transformation_as_dataset(
+                    transform, transform_number, transforms_group,
+                    depends_on_str)
+        return depends_on_str
+
+    def add_transformation_as_dataset(self, transform: Transformation,
+                                      transform_number: int,
+                                      transforms_group: h5py.Group,
+                                      depends_on: Optional[str]) -> str:
+        added_transform = transforms_group.create_dataset(
+            f"transform_{transform_number}", data=transform.value)
+        _add_transform_attributes(added_transform, depends_on, transform)
+        if transform.value_units is not None:
+            added_transform.attrs["units"] = transform.value_units
+        return added_transform.name
+
+    def add_log_group_to_file(self, log: Log,
+                              parent_group: h5py.Group) -> h5py.Group:
+        log_group = _create_nx_class(log.name, "NXlog", parent_group)
+        if log.value is not None:
+            value_ds = log_group.create_dataset("value", data=log.value)
+            if log.value_units is not None:
+                value_ds.attrs.create("units", data=log.value_units)
+        if log.time is not None:
+            time_ds = log_group.create_dataset("time", data=log.time)
+            if log.time_units is not None:
+                time_ds.attrs.create("units", data=log.time_units)
+        return log_group
+
+    def add_transformation_as_log(self, transform: Transformation,
+                                  transform_number: int,
+                                  transforms_group: h5py.Group,
+                                  depends_on: Optional[str]) -> str:
+        added_transform = self.add_log_group_to_file(
+            Log(f"transform_{transform_number}", transform.value,
+                transform.time, transform.value_units, transform.time_units),
+            transforms_group)
+
+        _add_transform_attributes(added_transform, depends_on, transform)
+        return added_transform.name
+
+    def add_detector_group_to_file(self, detector: Detector,
+                                   parent_group: h5py.Group,
+                                   group_name: str) -> h5py.Group:
+        detector_group = _create_nx_class(group_name, "NXdetector",
+                                          parent_group)
+        detector_group.create_dataset("detector_number",
+                                      data=detector.detector_numbers)
+        for dataset_name, array in (("x_pixel_offset", detector.x_offsets),
+                                    ("y_pixel_offset", detector.y_offsets),
+                                    ("z_pixel_offset", detector.z_offsets)):
+            if array is not None:
+                offsets_ds = detector_group.create_dataset(dataset_name,
+                                                           data=array)
+                if detector.offsets_unit is not None:
+                    offsets_ds.attrs["units"] = detector.offsets_unit
+        return detector_group
 
 
-class InMemoryNexusFileBuilder:
+class JsonWriter:
+    pass
+
+
+class NexusBuilder:
     """
     Allows building an in-memory NeXus file for use in tests
     """
@@ -213,6 +232,7 @@ class InMemoryNexusFileBuilder:
         self._source: List[Source] = []
         self._hard_links: List[Link] = []
         self._soft_links: List[Link] = []
+        self._writer = None
 
     def add_detector(self, detector: Detector):
         self._detectors.append(detector)
@@ -258,16 +278,17 @@ class InMemoryNexusFileBuilder:
                                mode='w',
                                driver="core",
                                backing_store=False)
+        self._writer = InMemoryNeXusWriter()
         try:
             self._write_file(nexus_file)
             yield nexus_file
         finally:
             nexus_file.close()
 
-    def _write_file(self, nexus_file):
+    def _write_file(self, nexus_file: h5py.File):
         entry_group = _create_nx_class("entry", "NXentry", nexus_file)
         if self._title is not None:
-            entry_group.create_dataset("title", data=self._title)
+            self._writer.add_dataset(entry_group, "title", data=self._title)
         self._write_event_data(entry_group)
         self._write_logs(entry_group)
         self._write_sample(entry_group)
@@ -286,71 +307,84 @@ class InMemoryNexusFileBuilder:
         explored using a tool such as HDFView.
         """
         nexus_file = h5py.File(filename, mode='w')
+        self._writer = InMemoryNeXusWriter()
         try:
             self._write_file(nexus_file)
         finally:
             nexus_file.close()
 
-    def _write_links(self, file_root: h5py.File):
+    def _write_links(self, file_root: Union[h5py.Group, Dict]):
         for hard_link in self._hard_links:
             file_root[hard_link.new_path] = file_root[hard_link.target_path]
         for soft_link in self._soft_links:
             file_root[soft_link.new_path] = h5py.SoftLink(
                 soft_link.target_path)
 
-    def _write_sample(self, parent_group: h5py.Group):
+    def _write_sample(self, parent_group: Union[h5py.Group, Dict]):
         for sample in self._sample:
             sample_group = _create_nx_class(sample.name, "NXsample",
                                             parent_group)
             if sample.depends_on is not None:
-                depends_on = _add_transformations_to_file(
+                depends_on = self._writer.add_transformations_to_file(
                     sample.depends_on, sample_group)
-                sample_group.create_dataset("depends_on", data=depends_on)
+                self._writer.add_dataset(sample_group,
+                                         "depends_on",
+                                         data=depends_on)
             if sample.distance is not None:
-                distance_ds = sample_group.create_dataset("distance",
-                                                          data=sample.distance)
+                distance_ds = self._writer.add_dataset(sample_group,
+                                                       "distance",
+                                                       data=sample.distance)
                 if sample.distance_units is not None:
                     distance_ds.attrs["units"] = sample.distance_units
 
-    def _write_source(self, parent_group: h5py.Group):
+    def _write_source(self, parent_group: Union[h5py.Group, Dict]):
         for source in self._source:
             source_group = _create_nx_class(source.name, "NXsource",
                                             parent_group)
             if source.depends_on is not None:
-                depends_on = _add_transformations_to_file(
+                depends_on = self._writer.add_transformations_to_file(
                     source.depends_on, source_group)
-                source_group.create_dataset("depends_on", data=depends_on)
+                self._writer.add_dataset(source_group,
+                                         "depends_on",
+                                         data=depends_on)
             if source.distance is not None:
-                distance_ds = source_group.create_dataset("distance",
-                                                          data=source.distance)
+                distance_ds = self._writer.add_dataset(source_group,
+                                                       "distance",
+                                                       data=source.distance)
                 if source.distance_units is not None:
                     distance_ds.attrs["units"] = source.distance_units
 
-    def _write_instrument(self, parent_group: h5py.Group) -> h5py.Group:
+    def _write_instrument(
+            self, parent_group: Union[h5py.Group,
+                                      Dict]) -> Union[h5py.Group, Dict]:
         instrument_group = _create_nx_class("instrument", "NXinstrument",
                                             parent_group)
-        instrument_group.create_dataset("name", data=self._instrument_name)
+        self._writer.add_dataset(instrument_group, "name",
+                                 self._instrument_name)
         return instrument_group
 
-    def _write_detectors(self, parent_group: h5py.Group):
+    def _write_detectors(self, parent_group: Union[h5py.Group, Dict]):
         for detector_index, detector in enumerate(self._detectors):
-            detector_group = _add_detector_group_to_file(
+            detector_group = self._writer.add_detector_group_to_file(
                 detector, parent_group, f"detector_{detector_index}")
             if detector.event_data is not None:
-                _add_event_data_group_to_file(detector.event_data,
-                                              detector_group, "events")
+                self._writer.add_event_data_group_to_file(
+                    detector.event_data, detector_group, "events")
             if detector.log is not None:
-                _add_log_group_to_file(detector.log, detector_group)
+                self._writer.add_log_group_to_file(detector.log,
+                                                   detector_group)
             if detector.depends_on is not None:
-                depends_on = _add_transformations_to_file(
+                depends_on = self._writer.add_transformations_to_file(
                     detector.depends_on, detector_group)
-                detector_group.create_dataset("depends_on", data=depends_on)
+                self._writer.add_dataset(detector_group,
+                                         "depends_on",
+                                         data=depends_on)
 
-    def _write_event_data(self, parent_group: h5py.Group):
+    def _write_event_data(self, parent_group: Union[h5py.Group, Dict]):
         for event_data_index, event_data in enumerate(self._event_data):
-            _add_event_data_group_to_file(event_data, parent_group,
-                                          f"events_{event_data_index}")
+            self._writer.add_event_data_group_to_file(
+                event_data, parent_group, f"events_{event_data_index}")
 
-    def _write_logs(self, parent_group: h5py.Group):
+    def _write_logs(self, parent_group: Union[h5py.Group, Dict]):
         for log in self._logs:
-            _add_log_group_to_file(log, parent_group)
+            self._writer.add_log_group_to_file(log, parent_group)
