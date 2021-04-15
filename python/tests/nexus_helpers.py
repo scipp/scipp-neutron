@@ -121,8 +121,65 @@ class InMemoryNeXusWriter:
         file_root[new_path] = h5py.SoftLink(target_path)
 
 
+numpy_to_fw_type = {
+    np.float32: "float32",
+    np.float64: "float64",
+    np.int32: "int32",
+    np.int64: "int64"
+}
+
+
 class JsonWriter:
-    pass
+    @staticmethod
+    def add_dataset(parent: Dict, name: str, data: Union[str,
+                                                         np.ndarray]) -> Dict:
+        if isinstance(data, str):
+            dataset_info = {"string_size": len(data), "type": "string"}
+        else:
+            dataset_info = {
+                "size": data.shape,
+                "type": numpy_to_fw_type[data.dtype]
+            }
+
+        new_dataset = {
+            "type": "dataset",
+            "name": name,
+            "dataset": dataset_info,
+            "attributes": []
+        }
+        parent["children"].append(new_dataset)
+        return new_dataset
+
+    @staticmethod
+    def add_attribute(parent: Dict, name: str, value: Union[str, np.ndarray]):
+        if isinstance(value, str):
+            attr_info = {"string_size": len(value), "type": "string"}
+        else:
+            attr_info = {
+                "size": value.shape,
+                "type": numpy_to_fw_type[value.dtype]
+            }
+        name_and_value = {"name": name, "values": value}
+        parent["attributes"].append[{**attr_info, **name_and_value}]
+
+    @staticmethod
+    def add_group(parent: Dict, name: str) -> Dict:
+        new_group = {
+            "type": "group",
+            "name": name,
+            "children": [],
+            "attributes": []
+        }
+        parent["children"].append(new_group)
+        return new_group
+
+    @staticmethod
+    def add_hard_link(file_root: Dict, new_path: str, target_path: str):
+        raise NotImplementedError
+
+    @staticmethod
+    def add_soft_link(file_root: Dict, new_path: str, target_path: str):
+        raise NotImplementedError
 
 
 class NexusBuilder:
