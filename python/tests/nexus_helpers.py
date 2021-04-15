@@ -4,6 +4,7 @@ import h5py
 import numpy as np
 from enum import Enum
 from contextlib import contextmanager
+import json
 
 h5root = Union[h5py.File, h5py.Group]
 
@@ -233,6 +234,20 @@ class NexusBuilder:
         elif isinstance(component, Source):
             self.add_source(component)
 
+    @property
+    def json_string(self):
+        self._writer = JsonWriter()
+        root = {"children": []}
+        self._write_file(root)
+        return json.dumps(root, indent=4)
+
+    def create_json_file(self):
+        self._writer = JsonWriter()
+        root = {"children": []}
+        self._write_file(root)
+        with open("json_out.txt") as json_file:
+            return json.dump(root, json_file, indent=4)
+
     @contextmanager
     def file(self) -> Iterator[h5py.File]:
         # "core" driver means file is "in-memory" not on disk.
@@ -249,7 +264,7 @@ class NexusBuilder:
         finally:
             nexus_file.close()
 
-    def _write_file(self, nexus_file: h5py.File):
+    def _write_file(self, nexus_file: Union[h5py.File, Dict]):
         entry_group = self._create_nx_class("entry", "NXentry", nexus_file)
         if self._title is not None:
             self._writer.add_dataset(entry_group, "title", data=self._title)
