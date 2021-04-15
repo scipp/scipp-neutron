@@ -112,6 +112,14 @@ class InMemoryNeXusWriter:
     def add_group(parent: h5py.Group, name: str) -> h5py.Group:
         return parent.create_group(name)
 
+    @staticmethod
+    def add_hard_link(file_root: h5py.File, new_path: str, target_path: str):
+        file_root[new_path] = file_root[target_path]
+
+    @staticmethod
+    def add_soft_link(file_root: h5py.File, new_path: str, target_path: str):
+        file_root[new_path] = h5py.SoftLink(target_path)
+
 
 class JsonWriter:
     pass
@@ -214,10 +222,11 @@ class NexusBuilder:
 
     def _write_links(self, file_root: Union[h5py.Group, Dict]):
         for hard_link in self._hard_links:
-            file_root[hard_link.new_path] = file_root[hard_link.target_path]
+            self._writer.add_hard_link(file_root, hard_link.new_path,
+                                       hard_link.target_path)
         for soft_link in self._soft_links:
-            file_root[soft_link.new_path] = h5py.SoftLink(
-                soft_link.target_path)
+            self._writer.add_soft_link(file_root, soft_link.new_path,
+                                       soft_link.target_path)
 
     def _write_sample(self, parent_group: Union[h5py.Group, Dict]):
         for sample in self._sample:
