@@ -145,6 +145,7 @@ class JsonWriter:
         new_dataset = {
             "type": "dataset",
             "name": name,
+            "values": data,
             "dataset": dataset_info,
             "attributes": []
         }
@@ -181,6 +182,13 @@ class JsonWriter:
     @staticmethod
     def add_soft_link(file_root: Dict, new_path: str, target_path: str):
         raise NotImplementedError
+
+
+class NumpyEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+        return json.JSONEncoder.default(self, obj)
 
 
 class NexusBuilder:
@@ -239,14 +247,14 @@ class NexusBuilder:
         self._writer = JsonWriter()
         root = {"children": []}
         self._write_file(root)
-        return json.dumps(root, indent=4)
+        return json.dumps(root, indent=4, cls=NumpyEncoder)
 
     def create_json_file(self):
         self._writer = JsonWriter()
         root = {"children": []}
         self._write_file(root)
         with open("json_out.txt", "w") as json_file:
-            return json.dump(root, json_file, indent=4)
+            return json.dump(root, json_file, indent=4, cls=NumpyEncoder)
 
     @contextmanager
     def file(self) -> Iterator[h5py.File]:
