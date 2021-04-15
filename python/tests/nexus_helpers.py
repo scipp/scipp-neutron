@@ -139,7 +139,7 @@ class JsonWriter:
         else:
             dataset_info = {
                 "size": data.shape,
-                "type": numpy_to_fw_type[data.dtype]
+                "type": numpy_to_fw_type[data.dtype.type]
             }
 
         new_dataset = {
@@ -158,10 +158,10 @@ class JsonWriter:
         else:
             attr_info = {
                 "size": value.shape,
-                "type": numpy_to_fw_type[value.dtype]
+                "type": numpy_to_fw_type[value.dtype.type]
             }
         name_and_value = {"name": name, "values": value}
-        parent["attributes"].append[{**attr_info, **name_and_value}]
+        parent["attributes"].append({**attr_info, **name_and_value})
 
     @staticmethod
     def add_group(parent: Dict, name: str) -> Dict:
@@ -245,7 +245,7 @@ class NexusBuilder:
         self._writer = JsonWriter()
         root = {"children": []}
         self._write_file(root)
-        with open("json_out.txt") as json_file:
+        with open("json_out.txt", "w") as json_file:
             return json.dump(root, json_file, indent=4)
 
     @contextmanager

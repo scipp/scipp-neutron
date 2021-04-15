@@ -504,6 +504,7 @@ def test_loads_pixel_positions_with_event_data():
 
     with builder.file() as nexus_file:
         loaded_data = scippneutron.load_nexus(nexus_file)
+    builder.create_json_file()
 
     # If z offsets are missing they should be zero
     z_pixel_offset_2 = np.array([[0., 0.], [0., 0.]])
