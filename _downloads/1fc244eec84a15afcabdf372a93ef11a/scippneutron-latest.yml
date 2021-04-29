@@ -1,0 +1,21 @@
+name: scippneutron
+
+channels:
+  - conda-forge
+
+dependencies:
+  - ess-dmsc::ess-streaming-data-types
+  - h5py
+  - ipympl
+  - ipython
+  - ipywidgets
+  - jupyterlab
+  - jupyterlab_widgets
+  - jupyter_nbextensions_configurator
+  - matplotlib-base
+  - nodejs
+  - python-confluent-kafka
+  - pythreejs
+  - scipp/label/dev::mantid-framework
+  - scipp/label/dev::scippneutron
+  - scipp::scipp

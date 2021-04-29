@@ -1,0 +1,6 @@
+﻿scippneutron.load
+=================
+
+.. currentmodule:: scippneutron
+
+.. autofunction:: load

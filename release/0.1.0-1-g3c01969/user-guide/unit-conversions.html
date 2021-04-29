@@ -1,0 +1,650 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Unit conversions &mdash; scippneutron  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+        <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="GroupBy" href="groupby.html" />
+    <link rel="prev" title="scippneutron.load" href="../generated/scippneutron.load.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+    
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview: scippneutron</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Unit conversions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Available-conversions">Available conversions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Beamline-geometry-parameters-used-in-unit-conversions">Beamline geometry parameters used in unit conversions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="groupby.html">GroupBy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="from-mantid-to-scipp.html">From Mantid to Scipp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="instrument-view.html">Instrument view</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/exploring-data.html">Exploring data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/working-with-masks.html">Working with masks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/powder-diffraction.html">Neutron Powder Diffraction</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../developer/getting-started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/coding-conventions.html">Coding conventions</a></li>
+</ul>
+<p class="caption"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about/about.html">About scippneutron</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/contributing.html">Contributing to scippneutron</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/release-notes.html">Release Notes</a></li>
+</ul>
+
+            
+          
+    <div style="height: 32px; position: fixed; bottom: 0; left: 15px;">
+      Select version:&nbsp;
+      <select onchange="location = this.value;"
+              style="height: 30px; color: #27a54b; background-color: #403d3d;
+                    border: 0px; box-shadow: none;">
+        <option value="https://scipp.github.io/scippneutron" selected>latest (unstable)</option>
+        <option value="https://scipp.github.io/scippneutron/release/0.1.0">v0.1</option>
+      </select>
+    </div>
+  
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">scippneutron</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Unit conversions</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/user-guide/unit-conversions.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<p><a class="reference external" href="https://raw.githubusercontent.com/scipp/scippneutron/main/docs/user-guide/unit-conversions.ipynb">Download this Jupyter notebook</a></p>
+<hr class="docutils" />
+<div class="section" id="Unit-conversions">
+<h1>Unit conversions<a class="headerlink" href="#Unit-conversions" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Available-conversions">
+<h2>Available conversions<a class="headerlink" href="#Available-conversions" title="Permalink to this headline">¶</a></h2>
+<p>Time-of-flight neutron-scattering unit conversions implement the following conversions. For background we refer to PaN-learning on <a class="reference external" href="https://pan-learning.org/wiki/index.php/Introduction_to_neutron_scattering">Introduction to neutron scattering</a> and <a class="reference external" href="https://pan-learning.org/wiki/index.php/Basics_of_neutron_scattering">Basics of neutron scattering</a>. In summary, in the table below for the supported unit conversions:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(h\)</span> is the Planck constant, <span class="math notranslate nohighlight">\(m_{\mathrm{n}}\)</span> is the neutron mass.</p></li>
+<li><p><span class="math notranslate nohighlight">\(L_1\)</span> is the primary flight path length, i.e., the distance between source and sample. The source position defines the point where <span class="math notranslate nohighlight">\(t=0\)</span> (or vice versa).</p></li>
+<li><p><span class="math notranslate nohighlight">\(L_2\)</span> is the secondary flight path length, i.e., the distance(s) between sample and detector(s).</p></li>
+<li><p><span class="math notranslate nohighlight">\(L_{\mathrm{total}} = L_1 + L_2\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(d\)</span> is the interplanar lattice spacing</p></li>
+<li><p><span class="math notranslate nohighlight">\(\theta\)</span> is the scattering angle, as defined in Bragg’s law, not to be confused with <span class="math notranslate nohighlight">\(\theta_{\mathrm{spherical}}\)</span> in sperical coordinates. In many instruments the beam is roughly aligned with the <span class="math notranslate nohighlight">\(z\)</span>-axis, so <span class="math notranslate nohighlight">\(2\theta = \theta_{\mathrm{spherical}}\)</span>. The factor of <span class="math notranslate nohighlight">\(2\)</span> is a recurrent source of bugs.</p></li>
+</ul>
+<p>In the special case of inelastic neutron scattering we have additionally:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(E_i\)</span> is the known incident energy. This case is called <em>direct inelastic scattering</em>. We define <span class="math notranslate nohighlight">\(t_0 = \sqrt{L_1^2 \cdot m_{\mathrm{n}} / E_i}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(E_f\)</span> is the known final energy. This case is called <em>indirect inelastic scattering</em>. We define <span class="math notranslate nohighlight">\(t_0 = \sqrt{L_2^2 \cdot m_{\mathrm{n}} /E_F}\)</span> In this case <span class="math notranslate nohighlight">\(E_f\)</span> is actually determined by analyzer crystals in the secondary flight path. It is assumed that the detector positions are set to the effective (neutronic) rather than physical positions, since the computation of <span class="math notranslate nohighlight">\(L_2\)</span> assumes a straight line connection between sample and detectors.</p></li>
+</ul>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 30%" />
+<col style="width: 40%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Origin unit</p></th>
+<th class="head"><p>Target unit</p></th>
+<th class="head"><p>Formula used for coord conversion</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">tof</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dspacing</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(d = \frac{\lambda}{2\sin(\theta)} = \frac{h \cdot t}{L_{\mathrm{total}} \cdot m_{\mathrm{n}} \cdot 2 \sin(\theta)}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dspacing</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tof</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(t = \frac{d \cdot L_{\mathrm{total}} \cdot m_{\mathrm{n}} \cdot 2 \sin(\theta)}{h}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">tof</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">wavelength</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(\lambda = \frac{h \cdot t}{m_{\mathrm{n}} \cdot L_{\mathrm{total}}}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">wavelength</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tof</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(t = \frac{m_{\mathrm{n}} \cdot L_{\mathrm{total}} \cdot \lambda}{h}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">tof</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">energy</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(E = \frac{m_{\mathrm{n}}L^2_{\mathrm{total}}}{2t^2}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">tof</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">energy_transfer</span></code> (direct)</p></td>
+<td><p><span class="math notranslate nohighlight">\(E = E_i - \frac{m_{\mathrm{n}}L^2_{\mathrm{2}}}{2\left(t-t_0\right)^{2}}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">tof</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">energy_transfer</span></code> (indirect)</p></td>
+<td><p><span class="math notranslate nohighlight">\(E = \frac{m_{\mathrm{n}}L^2_{\mathrm{1}}}{2\left(t-t_0\right)^{2}} - E_f\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">energy</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tof</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(t = \frac{L_{\mathrm{total}}}{\sqrt{\frac{2 E}{m_{\mathrm{n}}}}}\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="Beamline-geometry-parameters-used-in-unit-conversions">
+<h2>Beamline geometry parameters used in unit conversions<a class="headerlink" href="#Beamline-geometry-parameters-used-in-unit-conversions" title="Permalink to this headline">¶</a></h2>
+<p>The parameters given in the table above are retrieved from the coordinates or attributes of the input data. The following graph illustrates which coords (or attrs) are known and used by <code class="docutils literal notranslate"><span class="pre">convert</span></code>. Read the graph as follows:</p>
+<ul class="simple">
+<li><p>Ellipses represent geometry-related parameters of the beamline, e.g., <code class="docutils literal notranslate"><span class="pre">two_theta</span></code>.</p></li>
+<li><p>The grey rectangles denote an input or output unit, e.g., <code class="docutils literal notranslate"><span class="pre">wavelength</span></code>.</p></li>
+<li><p>A unit conversion involving a particular input or output unit will require the parameters connected to the rectangle by arrows.</p></li>
+<li><p>If a unit conversion requires a parameter the tree of paramameter ellipses is searched bottom-up.</p></li>
+</ul>
+<p>Example:</p>
+<ul class="simple">
+<li><p>Consider a unit conversion to <code class="docutils literal notranslate"><span class="pre">wavelength</span></code> (from, e.g., <code class="docutils literal notranslate"><span class="pre">tof</span></code>) <em>or</em> from <code class="docutils literal notranslate"><span class="pre">wavelength</span></code> (to, e.g., <code class="docutils literal notranslate"><span class="pre">tof</span></code>) will require the parameters connected to the rectangle by arrows, in this case <code class="docutils literal notranslate"><span class="pre">Ltotal</span></code>.</p></li>
+<li><p>If a coord or attr with name <code class="docutils literal notranslate"><span class="pre">Ltotal</span></code> is found it is used for the conversion.</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">Ltotal</span></code> is not found it will be computed based on coords or attrs <code class="docutils literal notranslate"><span class="pre">L1</span></code> and <code class="docutils literal notranslate"><span class="pre">L2</span></code>.</p></li>
+<li><p>If, e.g., <code class="docutils literal notranslate"><span class="pre">L2</span></code> is not found it is computed as the norm of the <code class="docutils literal notranslate"><span class="pre">scattered_beam</span></code> coord or attr.</p></li>
+<li><p>If, <code class="docutils literal notranslate"><span class="pre">scattered_beam</span></code> is not found it us computed as <code class="docutils literal notranslate"><span class="pre">position</span> <span class="pre">-</span> <span class="pre">sample_position</span></code>.</p></li>
+</ul>
+<p>There are two cases, scattering conversion and non-scattering conversion (e.g., for beam monitors or for imaging beamlines).</p>
+<p>Case 1: <code class="docutils literal notranslate"><span class="pre">convert(...,</span> <span class="pre">scatter=True)</span></code></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">show_geometry_params</span><span class="p">(</span><span class="n">scatter</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># helper defined in hidden cell</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/user-guide_unit-conversions_5_0.svg" src="../_images/user-guide_unit-conversions_5_0.svg" /></div>
+</div>
+<p>Case 2: <code class="docutils literal notranslate"><span class="pre">convert(...,</span> <span class="pre">scatter=False)</span></code></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">show_geometry_params</span><span class="p">(</span><span class="n">scatter</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1"># helper defined in hidden cell</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/user-guide_unit-conversions_7_0.svg" src="../_images/user-guide_unit-conversions_7_0.svg" /></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="groupby.html" class="btn btn-neutral float-right" title="GroupBy" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../generated/scippneutron.load.html" class="btn btn-neutral float-left" title="scippneutron.load" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021 Scipp contributors.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+    
+    <style>
+      .wy-nav-content { max-width: 1100px; }
+    </style>
+  
+
+</body>
+</html>

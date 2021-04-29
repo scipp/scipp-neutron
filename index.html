@@ -1,0 +1,450 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>scippneutron - Neutron scattering data processing based on scipp &mdash; scippneutron  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+        <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation" href="getting-started/installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="#">
+          
+
+          
+            
+            <img src="_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+    
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting-started/installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user-guide/overview.html">Overview: scippneutron</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user-guide/unit-conversions.html">Unit conversions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user-guide/groupby.html">GroupBy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user-guide/from-mantid-to-scipp.html">From Mantid to Scipp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user-guide/instrument-view.html">Instrument view</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/exploring-data.html">Exploring data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/working-with-masks.html">Working with masks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/powder-diffraction.html">Neutron Powder Diffraction</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="developer/getting-started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer/coding-conventions.html">Coding conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer/testing-live-data.html">Testing “live data”</a></li>
+</ul>
+<p class="caption"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="about/about.html">About scippneutron</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about/contributing.html">Contributing to scippneutron</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about/release-notes.html">Release Notes</a></li>
+</ul>
+
+            
+          
+    <div style="height: 32px; position: fixed; bottom: 0; left: 15px;">
+      Select version:&nbsp;
+      <select onchange="location = this.value;"
+              style="height: 30px; color: #27a54b; background-color: #403d3d;
+                    border: 0px; box-shadow: none;">
+        <option value="https://scipp.github.io/scippneutron" selected>latest (unstable)</option>
+        <option value="https://scipp.github.io/scippneutron/release/0.1.0">v0.1</option>
+      </select>
+    </div>
+  
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">scippneutron</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>scippneutron - Neutron scattering data processing based on scipp</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="scippneutron-neutron-scattering-data-processing-based-on-scipp">
+<h1>scippneutron - Neutron scattering data processing based on scipp<a class="headerlink" href="#scippneutron-neutron-scattering-data-processing-based-on-scipp" title="Permalink to this headline">¶</a></h1>
+<p>Toolkit for neutron scattering data reduction powered by <a class="reference external" href="https://scipp.github.io/">scipp</a>.
+Provides “unit conversions” and technique specific tools based on physics of (time-of-flight) neutron scattering.</p>
+<div class="section" id="news">
+<h2>News<a class="headerlink" href="#news" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Just like scipp, scippneutron is moving from GPLv3 to the more permissive BSD-3 license which fits better into the Python eco system.</p></li>
+<li><p><a class="reference external" href="https://scipp.github.io/about/release-notes.html#v0-6-0-march-2021">scipp-0.6</a> has been released.</p></li>
+<li><p>[March 2021] <a class="reference external" href="https://scipp.github.io/scippneutron/about/release-notes.html#v0-1-0-march-2021">scippneutron-0.1</a> has been released.</p></li>
+<li><p>[March 2021] <a class="reference external" href="https://scipp.github.io/about/release-notes.html#v0-6-0-march-2021">scipp-0.6</a> has been released.
+The <a class="reference external" href="https://scipp.github.io/about/whats-new/whats-new-0.6.0.html">What’s new</a> notebook provides an overview of the highlights and major changes in both scipp and scippneutron.</p></li>
+</ul>
+</div>
+<div class="section" id="where-can-i-get-help">
+<h2>Where can I get help?<a class="headerlink" href="#where-can-i-get-help" title="Permalink to this headline">¶</a></h2>
+<p>For questions not answered in the documentation
+<a class="reference external" href="https://github.com/scipp/scippneutron/issues?utf8=%E2%9C%93&amp;q=label%3Aquestion">this page</a>
+provides a forum with discussions on problems already met/solved in the community.</p>
+<p>New question can be asked by
+<a class="reference external" href="https://github.com/scipp/scippneutron/issues/new?assignees=&amp;labels=question&amp;template=question.md&amp;title=">opening</a>
+a new <a class="reference external" href="https://github.com/scipp/scippneutron/issues/new?assignees=&amp;labels=question&amp;template=question.md&amp;title="><img alt="QuestionLabel" src="_images/question.png" /></a> issue.</p>
+</div>
+</div>
+<div class="section" id="documentation">
+<h1>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting-started/installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="getting-started/installation.html#conda">Conda</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="getting-started/installation.html#with-the-provided-environment-file">With the provided environment file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="getting-started/installation.html#without-the-provided-environment-file">Without the provided environment file</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user-guide/overview.html">Overview: scippneutron</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/overview.html#free-functions">Free functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user-guide/overview.html#mantid-compatibility">Mantid Compatibility</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user-guide/overview.html#unit-conversion">Unit Conversion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user-guide/overview.html#beamline-geometry">Beamline geometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user-guide/overview.html#loading-nexus-files">Loading Nexus files</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user-guide/unit-conversions.html">Unit conversions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/unit-conversions.html#Available-conversions">Available conversions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/unit-conversions.html#Beamline-geometry-parameters-used-in-unit-conversions">Beamline geometry parameters used in unit conversions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user-guide/groupby.html">GroupBy</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/groupby.html#Grouping-with-bins">Grouping with bins</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user-guide/groupby.html#Example-1-(dense-data):-split-sum-combine">Example 1 (dense data): split-sum-combine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user-guide/groupby.html#Example-2-(event-data):-split-flatten-combine">Example 2 (event data): split-flatten-combine</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user-guide/from-mantid-to-scipp.html">From Mantid to Scipp</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/from-mantid-to-scipp.html#Data-types">Data types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user-guide/from-mantid-to-scipp.html#Workspaces">Workspaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user-guide/from-mantid-to-scipp.html#Other">Other</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/from-mantid-to-scipp.html#Concepts">Concepts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/from-mantid-to-scipp.html#Algorithms">Algorithms</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user-guide/from-mantid-to-scipp.html#notes-1">Notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user-guide/from-mantid-to-scipp.html#Test-Data">Test Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user-guide/from-mantid-to-scipp.html#Generic-algorithms">Generic algorithms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user-guide/from-mantid-to-scipp.html#Neutron-scattering-specific-algorithms">Neutron-scattering specific algorithms</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user-guide/instrument-view.html">Instrument view</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/exploring-data.html">Exploring data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/exploring-data.html#Step-1:-Use-the-HTML-representation-to-see-what-the-loaded-data-contains">Step 1: Use the HTML representation to see what the loaded data contains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/exploring-data.html#Step-2:-Plot-the-data">Step 2: Plot the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/exploring-data.html#Step-3:-Exploring-meta-data">Step 3: Exploring meta data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/exploring-data.html#Step-4:-Fixing-metadata">Step 4: Fixing metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/exploring-data.html#Step-5:-A-closer-look-at-the-data">Step 5: A closer look at the data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/working-with-masks.html">Working with masks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/working-with-masks.html#Introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/working-with-masks.html#Exercise-1:-Masking-a-prompt-pulse">Exercise 1: Masking a prompt pulse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/working-with-masks.html#Exercise-2:-Masking-spatially">Exercise 2: Masking spatially</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/working-with-masks.html#Exercise-3:-Combining-conditions">Exercise 3: Combining conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/working-with-masks.html#Exercise-4:-More-spatial-masking">Exercise 4: More spatial masking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/working-with-masks.html#Bonus-exercise:-Generalize-techniques-learned-for-masking-for-grouping">Bonus exercise: Generalize techniques learned for masking for grouping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/working-with-masks.html#Masks-in-(grouped)-reduction-operations">Masks in (grouped) reduction operations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/powder-diffraction.html">Neutron Powder Diffraction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/powder-diffraction.html#Loading-Nexus-files">Loading Nexus files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/powder-diffraction.html#Instrument-view">Instrument view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/powder-diffraction.html#Plot-against-scattering-angle-\theta-using-groupby">Plot against scattering angle <span class="math notranslate nohighlight">\(\theta\)</span> using <code class="docutils literal notranslate"><span class="pre">groupby</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/powder-diffraction.html#Unit-conversion">Unit conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/powder-diffraction.html#Neutron-monitors">Neutron monitors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/powder-diffraction.html#From-events-to-histogram">From events to histogram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/powder-diffraction.html#Summing-(focussing)-and-normalizing">Summing (focussing) and normalizing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/powder-diffraction.html#Focussing-with-\theta-dependence-in-event-mode">Focussing with <span class="math notranslate nohighlight">\(\theta\)</span> dependence in event-mode</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Developer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="developer/getting-started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developer/getting-started.html#what-goes-into-scippneutron">What goes into scippneutron</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developer/coding-conventions.html">Coding conventions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developer/coding-conventions.html#formatting">Formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer/coding-conventions.html#testing">Testing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developer/testing-live-data.html">Testing “live data”</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developer/testing-live-data.html#setup">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer/testing-live-data.html#run-containers">Run Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer/testing-live-data.html#clean-up">Clean Up</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="about/about.html">About scippneutron</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="about/about.html#development">Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about/about.html#references-and-citations">References and citations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about/about.html#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about/about.html#source-code-and-development">Source code and development</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="about/contributing.html">Contributing to scippneutron</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="about/contributing.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about/contributing.html#scope">Scope</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="about/release-notes.html">Release Notes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="about/release-notes.html#since-v0-1-0">Since v0.1.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="about/release-notes.html#features">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="about/release-notes.html#breaking-changes">Breaking changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="about/release-notes.html#contributors">Contributors</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="about/release-notes.html#v0-1-0-march-2021">v0.1.0 (March 2021)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="about/release-notes.html#id2">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="about/release-notes.html#id4">Breaking changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="about/release-notes.html#id5">Contributors</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="getting-started/installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021 Scipp contributors.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+    
+    <style>
+      .wy-nav-content { max-width: 1100px; }
+    </style>
+  
+
+</body>
+</html>

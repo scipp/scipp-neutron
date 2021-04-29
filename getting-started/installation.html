@@ -1,0 +1,368 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Installation &mdash; scippneutron  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+        <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Overview: scippneutron" href="../user-guide/overview.html" />
+    <link rel="prev" title="scippneutron - Neutron scattering data processing based on scipp" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+    
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#conda">Conda</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#with-the-provided-environment-file">With the provided environment file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#without-the-provided-environment-file">Without the provided environment file</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../user-guide/overview.html">Overview: scippneutron</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-guide/unit-conversions.html">Unit conversions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-guide/groupby.html">GroupBy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-guide/from-mantid-to-scipp.html">From Mantid to Scipp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-guide/instrument-view.html">Instrument view</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/exploring-data.html">Exploring data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/working-with-masks.html">Working with masks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/powder-diffraction.html">Neutron Powder Diffraction</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../developer/getting-started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/coding-conventions.html">Coding conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/testing-live-data.html">Testing “live data”</a></li>
+</ul>
+<p class="caption"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about/about.html">About scippneutron</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/contributing.html">Contributing to scippneutron</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/release-notes.html">Release Notes</a></li>
+</ul>
+
+            
+          
+    <div style="height: 32px; position: fixed; bottom: 0; left: 15px;">
+      Select version:&nbsp;
+      <select onchange="location = this.value;"
+              style="height: 30px; color: #27a54b; background-color: #403d3d;
+                    border: 0px; box-shadow: none;">
+        <option value="https://scipp.github.io/scippneutron" selected>latest (unstable)</option>
+        <option value="https://scipp.github.io/scippneutron/release/0.1.0">v0.1</option>
+      </select>
+    </div>
+  
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">scippneutron</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Installation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/getting-started/installation.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="installation">
+<span id="id1"></span><h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>Scippneutron requires Python 3.7 or above.</p>
+<div class="section" id="conda">
+<h2>Conda<a class="headerlink" href="#conda" title="Permalink to this headline">¶</a></h2>
+<p>The easiest way to install <code class="docutils literal notranslate"><span class="pre">scipp</span></code> and <code class="docutils literal notranslate"><span class="pre">scippneutron</span></code> is using <a class="reference external" href="https://conda.io">conda</a>.
+Packages from <a class="reference external" href="https://conda.anaconda.org/scipp">Anaconda Cloud</a> are available for Linux, macOS, and Windows.
+It is recommended to create an environment rather than installing individual packages.</p>
+<div class="section" id="with-the-provided-environment-file">
+<h3>With the provided environment file<a class="headerlink" href="#with-the-provided-environment-file" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p>Download <a class="reference download internal" download="" href="../_downloads/ba4cce3fec883c408817b116e7a7750a/scippneutron.yml"><code class="xref download docutils literal notranslate"><span class="pre">scippneutron.yml</span></code></a> for the stable release version of scipp.
+Use <a class="reference download internal" download="" href="../_downloads/1fc244eec84a15afcabdf372a93ef11a/scippneutron-latest.yml"><code class="xref download docutils literal notranslate"><span class="pre">scippneutron-latest.yml</span></code></a> for the latest development version.</p></li>
+<li><p>In a terminal run:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda activate
+conda env create -f scippneutron.yml
+conda activate scippneutron
+jupyter lab
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">activate</span></code> ensures that you are in your <code class="docutils literal notranslate"><span class="pre">base</span></code> environment.
+This will take a few minutes.
+Above, replace <code class="docutils literal notranslate"><span class="pre">scippneutron.yml</span></code> with the path to the download location you used to download the environment.
+Open the link printed by Jupyter in a browser if it does not open automatically.</p>
+</li>
+</ol>
+<p>If you have previously installed scipp with conda we nevertheless recommend creating a fresh environment rather than trying to <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">update</span></code>.
+You may want to remove your old environment first, e.g.,</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda activate
+conda env remove -n scippneutron
+</pre></div>
+</div>
+<p>and then proceed as per instructions above.
+The <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">activate</span></code> ensures that you are in your <code class="docutils literal notranslate"><span class="pre">base</span></code> environment.</p>
+</div>
+<div class="section" id="without-the-provided-environment-file">
+<h3>Without the provided environment file<a class="headerlink" href="#without-the-provided-environment-file" title="Permalink to this headline">¶</a></h3>
+<p>To create a new conda environment with scippneutron:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ conda create -n env_with_scipp -c conda-forge -c scipp -c ess-dmsc scippneutron
+</pre></div>
+</div>
+<p>For a more up-to-date version, the <cite>scipp/label/dev</cite> channel can be used instead:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ conda install -c conda-forge -c scipp/label/dev -c ess-dmsc scippneutron
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Instaling <code class="docutils literal notranslate"><span class="pre">scippneutron</span></code> on Windows requires <code class="docutils literal notranslate"><span class="pre">Microsoft</span> <span class="pre">Visual</span> <span class="pre">Studio</span> <span class="pre">2019</span> <span class="pre">C++</span> <span class="pre">Runtime</span></code> installed.
+Visit <a class="reference external" href="https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads">https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads</a> for the up to date version of the library.</p>
+</div>
+<p>After installation the modules <code class="docutils literal notranslate"><span class="pre">scipp</span></code> and <code class="docutils literal notranslate"><span class="pre">scippneutron</span></code> can be imported in Python.
+Note that only the bare essential dependencies are installed.
+If you wish to use plotting functionality you will also need to install <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> and <code class="docutils literal notranslate"><span class="pre">ipywidgets</span></code>.
+If you wish to use the live data functionality you will need to install <code class="docutils literal notranslate"><span class="pre">conda-forge::python-confluent-kafka</span></code> and <code class="docutils literal notranslate"><span class="pre">ess-dmsc::ess-streaming-data-types</span></code> with conda, or on Windows install <code class="docutils literal notranslate"><span class="pre">confluent-kafka</span></code> and <code class="docutils literal notranslate"><span class="pre">ess-streaming-data-types</span></code> from the PyPI:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ pip install confluent-kafka ess-streaming-data-types
+</pre></div>
+</div>
+<p>To update or remove <code class="docutils literal notranslate"><span class="pre">scippneutron</span></code> use <a class="reference external" href="https://docs.conda.io/projects/conda/en/latest/commands/update.html">conda update</a> and <a class="reference external" href="https://docs.conda.io/projects/conda/en/latest/commands/remove.html">conda remove</a>.</p>
+<p>If you wish to use <code class="docutils literal notranslate"><span class="pre">scippneutron</span></code> with Mantid you may use the following command to create an environment containing both <code class="docutils literal notranslate"><span class="pre">scippneutron</span></code> and Mantid framework.</p>
+<p>Note that Conda packages for Mantid are only available on Linux and macOS, and are currently maintained separate to the Mantid project.
+This is due to some dependencies being too old to work in the same environment as Scipp.</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ conda create <span class="se">\</span>
+    -n env_with_scipp_and_mantid <span class="se">\</span>
+    -c conda-forge <span class="se">\</span>
+    -c scipp <span class="se">\</span>
+    <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.7 <span class="se">\</span>
+    scippneutron <span class="se">\</span>
+    mantid-framework
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Instaling <cite>scippneutron`</cite> with Mantid on Windows is possible but requires <code class="docutils literal notranslate"><span class="pre">Windows</span> <span class="pre">Subsystem</span> <span class="pre">for</span> <span class="pre">Linux</span> <span class="pre">1</span></code> (WSL 1) installed and is limited to Windows 10.
+Please follow the steps on the <a class="reference external" href="https://docs.microsoft.com/en-us/windows/wsl/install-win10">Windows Subsystem for Linux Installation Guide page</a>
+to enable Linux support.
+Once <code class="docutils literal notranslate"><span class="pre">WSL</span> <span class="pre">1</span></code> is installed, setting up Scipp with Mantid follows the Linux specific directions described above.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../user-guide/overview.html" class="btn btn-neutral float-right" title="Overview: scippneutron" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../index.html" class="btn btn-neutral float-left" title="scippneutron - Neutron scattering data processing based on scipp" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021 Scipp contributors.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+    
+    <style>
+      .wy-nav-content { max-width: 1100px; }
+    </style>
+  
+
+</body>
+</html>
