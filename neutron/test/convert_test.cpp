@@ -5,12 +5,11 @@
 
 #include <scipp/core/dimensions.h>
 #include <scipp/dataset/bins.h>
-#include <scipp/dataset/counts.h>
 #include <scipp/dataset/dataset.h>
-#include <scipp/dataset/histogram.h>
 #include <scipp/variable/comparison.h>
 #include <scipp/variable/operations.h>
 
+#include "scipp/core/eigen.h"
 #include "scipp/neutron/convert.h"
 
 using namespace scipp;
@@ -35,13 +34,13 @@ Dataset makeBeamline() {
 
 Dataset makeTofDataset() {
   Dataset tof = makeBeamline();
-  tof.setCoord(NeutronDim::Tof,
-               makeVariable<double>(Dims{NeutronDim::Tof}, Shape{4}, units::us,
-                                    Values{4000, 5000, 6100, 7300}));
   tof.setData("counts",
               makeVariable<double>(Dims{NeutronDim::Spectrum, NeutronDim::Tof},
                                    Shape{2, 3}, units::counts,
                                    Values{1, 2, 3, 4, 5, 6}));
+  tof.setCoord(NeutronDim::Tof,
+               makeVariable<double>(Dims{NeutronDim::Tof}, Shape{4}, units::us,
+                                    Values{4000, 5000, 6100, 7300}));
 
   return tof;
 }
@@ -79,9 +78,10 @@ TEST_P(ConvertTest, DataArray_from_tof) {
     const auto expected =
         convert(tof, NeutronDim::Tof, dim, ConvertMode::Scatter);
     Dataset result;
-    for (const auto &data : tof)
-      result.setData(data.name(),
-                     convert(data, NeutronDim::Tof, dim, ConvertMode::Scatter));
+    for (const auto &data : tof) {
+      result.setData(data.name(), convert(copy(data), NeutronDim::Tof, dim,
+                                          ConvertMode::Scatter));
+    }
     for (const auto &data : result)
       EXPECT_EQ(data, expected[data.name()]);
   }
@@ -125,15 +125,14 @@ TEST_P(ConvertTest, DataArray_non_tof) {
     }
   }
 }
-
 TEST_P(ConvertTest, convert_slice) {
   Dataset tof = GetParam();
   const auto slice = Slice{NeutronDim::Spectrum, 0};
   for (const auto &dim :
        {NeutronDim::DSpacing, NeutronDim::Wavelength, NeutronDim::Energy}) {
     auto expected =
-        convert(tof["counts"], NeutronDim::Tof, dim, ConvertMode::Scatter)
-            .slice(slice);
+        copy(convert(tof["counts"], NeutronDim::Tof, dim, ConvertMode::Scatter)
+                 .slice(slice));
     // A side-effect of `convert` is that it turns relevant meta data into
     // coords or attrs, depending on the target unit. Slicing (without range)
     // turns coords into attrs, but applying `convert` effectively reverses
@@ -141,48 +140,49 @@ TEST_P(ConvertTest, convert_slice) {
     if (dim != NeutronDim::DSpacing)
       expected.coords().set(NeutronDim::Position,
                             expected.attrs().extract(NeutronDim::Position));
-    EXPECT_EQ(convert(tof["counts"].slice(slice), NeutronDim::Tof, dim,
+    EXPECT_EQ(convert(copy(tof["counts"].slice(slice)), NeutronDim::Tof, dim,
                       ConvertMode::Scatter),
               expected);
     // Converting slice of item is same as item of converted slice
-    EXPECT_EQ(convert(tof["counts"].slice(slice), NeutronDim::Tof, dim,
+    EXPECT_EQ(convert(copy(tof["counts"].slice(slice)), NeutronDim::Tof, dim,
                       ConvertMode::Scatter),
-              convert(tof.slice(slice), NeutronDim::Tof, dim,
+              convert(copy(tof.slice(slice)), NeutronDim::Tof, dim,
                       ConvertMode::Scatter)["counts"]);
   }
 }
-
 TEST_P(ConvertTest, fail_count_density) {
   const Dataset tof = GetParam();
-  for (const Dim dim :
+  for (const Dim &dim :
        {NeutronDim::DSpacing, NeutronDim::Wavelength, NeutronDim::Energy}) {
     Dataset a = tof;
     Dataset b = convert(a, NeutronDim::Tof, dim, ConvertMode::Scatter);
-    EXPECT_NO_THROW(convert(a, NeutronDim::Tof, dim, ConvertMode::Scatter));
-    EXPECT_NO_THROW(convert(b, dim, NeutronDim::Tof, ConvertMode::Scatter));
+    EXPECT_NO_THROW_DISCARD(
+        convert(a, NeutronDim::Tof, dim, ConvertMode::Scatter));
+    EXPECT_NO_THROW_DISCARD(
+        convert(b, dim, NeutronDim::Tof, ConvertMode::Scatter));
     a.setData("", makeCountDensityData(a.coords()[NeutronDim::Tof].unit()));
     b.setData("", makeCountDensityData(b.coords()[dim].unit()));
-    EXPECT_THROW(convert(a, NeutronDim::Tof, dim, ConvertMode::Scatter),
-                 except::UnitError);
-    EXPECT_THROW(convert(b, dim, NeutronDim::Tof, ConvertMode::Scatter),
-                 except::UnitError);
+    EXPECT_THROW_DISCARD(convert(a, NeutronDim::Tof, dim, ConvertMode::Scatter),
+                         except::UnitError);
+    EXPECT_THROW_DISCARD(convert(b, dim, NeutronDim::Tof, ConvertMode::Scatter),
+                         except::UnitError);
   }
 }
 
 TEST_P(ConvertTest, scattering_conversions_fail_with_NoScatter_mode) {
   Dataset tof = GetParam();
-  EXPECT_THROW(convert(tof, NeutronDim::Tof, NeutronDim::DSpacing,
-                       ConvertMode::NoScatter),
-               std::runtime_error);
-  EXPECT_NO_THROW(convert(tof, NeutronDim::Tof, NeutronDim::DSpacing,
-                          ConvertMode::Scatter));
+  EXPECT_THROW_DISCARD(convert(tof, NeutronDim::Tof, NeutronDim::DSpacing,
+                               ConvertMode::NoScatter),
+                       std::runtime_error);
+  EXPECT_NO_THROW_DISCARD(convert(tof, NeutronDim::Tof, NeutronDim::DSpacing,
+                                  ConvertMode::Scatter));
   const auto wavelength = convert(tof, NeutronDim::Tof, NeutronDim::Wavelength,
                                   ConvertMode::Scatter);
-  EXPECT_THROW(convert(wavelength, NeutronDim::Wavelength, NeutronDim::Q,
-                       ConvertMode::NoScatter),
-               std::runtime_error);
-  EXPECT_NO_THROW(convert(wavelength, NeutronDim::Wavelength, NeutronDim::Q,
-                          ConvertMode::Scatter));
+  EXPECT_THROW_DISCARD(convert(wavelength, NeutronDim::Wavelength,
+                               NeutronDim::Q, ConvertMode::NoScatter),
+                       std::runtime_error);
+  EXPECT_NO_THROW_DISCARD(convert(wavelength, NeutronDim::Wavelength,
+                                  NeutronDim::Q, ConvertMode::Scatter));
 }
 
 TEST_P(ConvertTest, Tof_to_DSpacing) {
@@ -532,16 +532,16 @@ TEST(ConvertBucketsTest, events_converted) {
   tof.setData("bucketed", makeTofBucketedEvents());
   for (auto &&d :
        {NeutronDim::DSpacing, NeutronDim::Wavelength, NeutronDim::Energy}) {
-    auto res = convert(tof, NeutronDim::Tof, d, ConvertMode::Scatter);
+    auto res = convert(copy(tof), NeutronDim::Tof, d, ConvertMode::Scatter);
     auto values = res["bucketed"].values<bucket<DataArray>>();
-    Variable expected(
-        res.coords()[d].slice({NeutronDim::Spectrum, 0}).slice({d, 0, 4}));
+    Variable expected =
+        copy(res.coords()[d].slice({NeutronDim::Spectrum, 0}).slice({d, 0, 4}));
     expected.rename(d, Dim::Event);
     EXPECT_FALSE(values[0].coords().contains(NeutronDim::Tof));
     EXPECT_TRUE(values[0].coords().contains(d));
     EXPECT_EQ(values[0].coords()[d], expected);
-    expected = Variable(
-        res.coords()[d].slice({NeutronDim::Spectrum, 1}).slice({d, 0, 3}));
+    expected =
+        copy(res.coords()[d].slice({NeutronDim::Spectrum, 1}).slice({d, 0, 3}));
     expected.rename(d, Dim::Event);
     EXPECT_FALSE(values[1].coords().contains(NeutronDim::Tof));
     EXPECT_TRUE(values[1].coords().contains(d));

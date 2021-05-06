@@ -8,17 +8,17 @@
 
 #include <scipp/core/element/arg_list.h>
 
-#include <scipp/variable/bucket_model.h>
 #include <scipp/variable/transform.h>
 #include <scipp/variable/util.h>
 
-#include <scipp/dataset/bins.h>
 #include <scipp/dataset/dataset.h>
 #include <scipp/dataset/dataset_util.h>
 
 #include "scipp/neutron/constants.h"
 #include "scipp/neutron/conversions.h"
 #include "scipp/neutron/convert.h"
+#include <scipp/dataset/bins_view.h>
+#include <sstream>
 
 using namespace scipp::variable;
 using namespace scipp::dataset;
@@ -37,23 +37,23 @@ T convert_generic(T &&d, const Dim from, const Dim to, Op op,
   // 1. Transform coordinate
   if (d.coords().contains(from)) {
     const auto coord = d.coords()[from];
-    if (!coord.dims().contains(merge(args.dims()...)))
-      d.coords().set(from,
-                     broadcast(coord, merge(args.dims()..., coord.dims())));
+    d.coords().set(from,
+                   copy(broadcast(coord, merge(args.dims()..., coord.dims()))));
     transform_in_place(d.coords()[from], args..., op_);
   }
   // 2. Transform coordinates in bucket variables
-  for (const auto &item : iter(d)) {
+  for (auto &&item : iter(d)) {
     if (item.dtype() != dtype<bucket<DataArray>>)
       continue;
-    const auto &[indices, dim, buffer] =
+    auto [indices, dim, buffer] =
         item.data().template constituents<bucket<DataArray>>();
     if (!buffer.coords().contains(from))
       continue;
-    auto buffer_coord = buffer.coords().extract(from);
-    auto coord = make_non_owning_bins(indices, dim, VariableView(buffer_coord));
-    transform_in_place(coord, args..., op_);
-    buffer.coords().set(to, std::move(buffer_coord));
+    auto view = dataset::bins_view<DataArray>(item.data());
+    auto transformed = copy(view.coords()[from]);
+    transform_in_place(transformed, args..., op_);
+    view.coords().set(to, transformed);
+    view.coords().erase(from);
   }
 
   // 3. Rename dims
@@ -120,8 +120,9 @@ T coords_to_attrs(T &&x, const Dim from, const Dim to,
     Variable coord(x.coords()[field]);
     if constexpr (std::is_same_v<std::decay_t<T>, Dataset>) {
       x.coords().erase(field);
-      for (const auto &item : iter(x))
-        item.attrs().set(field, coord);
+      for (auto &&item : iter(x)) {
+        item.attrs().set(field, coord.as_const());
+      }
     } else {
       x.coords().erase(field);
       x.attrs().set(field, coord);
@@ -145,7 +146,7 @@ T attrs_to_coords(T &&x, const Dim to, const ConvertMode scatter) {
       return;
     Variable attr(range.begin()->attrs()[field]);
     if constexpr (std::is_same_v<std::decay_t<T>, Dataset>) {
-      for (const auto &item : range) {
+      for (auto item : range) {
         core::expect::equals(item.attrs()[field], attr);
         item.attrs().erase(field);
       }
@@ -270,14 +271,9 @@ T convert_impl(T d, const Dim from, const Dim to, const ConvertMode scatter) {
 DataArray convert(DataArray d, const Dim from, const Dim to,
                   const ConvertMode scatter) {
   check_params(from, to, scatter);
-  return coords_to_attrs(convert_impl(std::move(d), from, to, scatter), from,
-                         to, scatter);
-}
-
-DataArray convert(const DataArrayConstView &d, const Dim from, const Dim to,
-                  const ConvertMode scatter) {
-  check_params(from, to, scatter);
-  return convert(DataArray(d), from, to, scatter);
+  Dataset out = coords_to_attrs(convert_impl(Dataset(d), from, to, scatter),
+                                from, to, scatter);
+  return out[d.name()];
 }
 
 Dataset convert(Dataset d, const Dim from, const Dim to,
@@ -285,12 +281,6 @@ Dataset convert(Dataset d, const Dim from, const Dim to,
   check_params(from, to, scatter);
   return coords_to_attrs(convert_impl(std::move(d), from, to, scatter), from,
                          to, scatter);
-}
-
-Dataset convert(const DatasetConstView &d, const Dim from, const Dim to,
-                const ConvertMode scatter) {
-  check_params(from, to, scatter);
-  return convert(Dataset(d), from, to, scatter);
 }
 
 } // namespace scipp::neutron
